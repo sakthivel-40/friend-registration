@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Update packages
+sudo yum update -y
+
+# Install Apache, PHP, and MySQL client
+sudo yum install -y httpd php php-mysqlnd mysql
+
+# Start and enable Apache
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# Copy project files to web root
+PROJECT_DIR="/home/ec2-user/aws-friend-registration"
+sudo cp -r $PROJECT_DIR/* /var/www/html/
+
+# Set permissions
+sudo chown -R apache:apache /var/www/html
+sudo chmod -R 755 /var/www/html
+
+# Restart Apache to apply changes
+sudo systemctl restart httpd
+
+echo "✅ Deployment complete! Access the form at http://<EC2-public-IP>"
